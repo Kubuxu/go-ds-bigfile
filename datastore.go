@@ -56,7 +56,7 @@ func Open(dsPath string) (*Datastore, error) {
 		return nil, err
 	}
 
-	ds.index, err = newLDBIndex(path.Join(dsPath, "ldbindex"))
+	ds.index, err = newLDBIndex(path.Join(dsPath, "ldbindex"), int64(len(ds.mem)))
 	if err != nil {
 		return nil, err
 	}
