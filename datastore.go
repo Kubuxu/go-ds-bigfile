@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	"launchpad.net/gommap"
+	"github.com/tysonmote/gommap"
 )
 
 const (
@@ -64,7 +64,7 @@ func Open(dsPath string) (*Datastore, error) {
 	return ds, nil
 }
 
-func Create(dsPath string, size uint64) error {
+func Create(dsPath string, size int64) error {
 	err := checkDir(dsPath)
 	if err != nil {
 		return err
@@ -72,7 +72,7 @@ func Create(dsPath string, size uint64) error {
 
 	fPath := path.Join(dsPath, BIGFILE_NAME)
 
-	_, err := os.Stat(fPath)
+	_, err = os.Stat(fPath)
 	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
@@ -81,6 +81,14 @@ func Create(dsPath string, size uint64) error {
 	}
 
 	f, err := os.Create(fPath)
+	if err != nil {
+		return err
+	}
+
+	err = f.Truncate(size)
+	if err != nil {
+		return err
+	}
 
 	return nil
 
